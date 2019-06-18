@@ -26,6 +26,7 @@
   "devDependencies": {
     "@types/mocha": "^5.2.7",
     "@types/node": "^10.14.9",
-    "@types/q": "^1.5.2"
+    "@types/q": "^1.5.2",
+    "tfx": "^1.1.0"
   }
 }
