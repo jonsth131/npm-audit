@@ -28,15 +28,15 @@
       },
     "links": {
         "repository": {
-          "uri": "https://github.com/jonsth131/vss-extensions"
+          "uri": "https://github.com/jonsth131/npm-audit"
         },
         "issues": {
-          "uri": "https://github.com/jonsth131/vss-extensions/issues"
+          "uri": "https://github.com/jonsth131/npm-audit/issues"
         }
       },
       "repository": {
         "type": "git",
-        "uri": "https://github.com/jonsth131/vss-extensions"
+        "uri": "https://github.com/jonsth131/npm-audit"
       },
     "icons": {
         "default": "extension-icon.png"
