@@ -8,4 +8,4 @@ steps:
 - task: PowerShell@2
   displayName: 'Build package'
   inputs:
-    filePath: '$(Build.SourcesDirectory)\build.ps1'
+    filePath: '$(Build.SourcesDirectory)/build.ps1'
