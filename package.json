@@ -1,0 +1,31 @@
+{
+  "name": "npm-audit",
+  "version": "1.0.0",
+  "description": "Npm audit build task",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests\\_suite.js"
+  },
+  "keywords": [
+    "npm",
+    "audit",
+    "ci"
+  ],
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/jonsth131/vss-extensions"
+  },
+  "bugs": {
+    "url": "https://github.com/jonsth131/vss-extensions/issues"
+  },
+  "author": "jonas-s",
+  "license": "MIT",
+  "dependencies": {
+    "azure-pipelines-task-lib": "^2.8.0"
+  },
+  "devDependencies": {
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^10.14.9",
+    "@types/q": "^1.5.2"
+  }
+}

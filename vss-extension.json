@@ -1,0 +1,61 @@
+{
+    "manifestVersion": 1,
+    "id": "npm-audit",
+    "name": "Npm audit",
+    "version": "0.0.5",
+    "publisher": "jonas-s",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "description": "Build task to run npm audit",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "tags": [
+        "Azure Pipelines",
+        "Dependency check",
+        "Security"
+    ],
+    "content": {
+        "details": {
+          "path": "overview.md"
+        },
+        "license": {
+          "path": "license.txt"
+        }
+      },
+    "links": {
+        "repository": {
+          "uri": "https://github.com/jonsth131/vss-extensions"
+        },
+        "issues": {
+          "uri": "https://github.com/jonsth131/vss-extensions/issues"
+        }
+      },
+      "repository": {
+        "type": "git",
+        "uri": "https://github.com/jonsth131/vss-extensions"
+      },
+    "icons": {
+        "default": "extension-icon.png"
+    },
+    "files": [
+        {
+            "path": "task"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "npm-audit-build-task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "task"
+            }
+        }
+    ]
+}

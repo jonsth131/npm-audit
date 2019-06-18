@@ -1,0 +1,1 @@
+Build extension to run npm audit and fail the build on found vulnerabilites.
