@@ -5,6 +5,11 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- task: Npm@1
+  displayName: 'Npm install'
+  inputs:
+    command: 'install'
+
 - task: CmdLine@2
   displayName: 'Compile typescript'
   inputs:
