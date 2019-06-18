@@ -2,8 +2,9 @@
     "manifestVersion": 1,
     "id": "npm-audit",
     "name": "Npm audit",
-    "version": "0.0.5",
+    "version": "1.0.0",
     "publisher": "jonas-s",
+    "public": true,
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
@@ -44,6 +45,10 @@
     "files": [
         {
             "path": "task"
+        },
+        {
+            "path": "screenshot.png",
+            "addressable": true
         }
     ],
     "contributions": [
