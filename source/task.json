@@ -26,6 +26,14 @@
             "helpMarkDown": "Working directory to run npm audit in"
         },
         {
+            "name": "productionOnly",
+            "type": "checkbox",
+            "label": "Check production dependencies only",
+            "defaultValue": false,
+            "required": false,
+            "helpMarkDown": "Skips devDependencies and only checks production dependencies"
+          },
+        {
             "name": "level",
             "type": "radio",
             "label": "Level to fail task",

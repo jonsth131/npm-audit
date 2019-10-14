@@ -7,8 +7,11 @@ async function run(): Promise<void> {
         tl.setResourcePath(path.join(__dirname, "task.json"));
         const cwd: string = tl.getPathInput("path", true);
         const level: string = tl.getInput("level", true);
+        const productionOnly: boolean = tl.getBoolInput("productionOnly", false);
         const toolPath: string = tl.which("npm", true);
         const toolRunner: ToolRunner = tl.tool(toolPath).arg("audit");
+
+        if (productionOnly) toolRunner.arg("--production");
 
         tl.cd(cwd);
         const result: IExecSyncResult = toolRunner.execSync();
