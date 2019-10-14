@@ -26,6 +26,8 @@
   "devDependencies": {
     "@types/mocha": "^5.2.7",
     "@types/node": "^10.14.9",
-    "@types/q": "^1.5.2"
+    "@types/q": "^1.5.2",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.4"
   }
 }
