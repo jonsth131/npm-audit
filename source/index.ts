@@ -5,8 +5,8 @@ import { ToolRunner, IExecSyncResult } from "azure-pipelines-task-lib/toolrunner
 async function run(): Promise<void> {
     try {
         tl.setResourcePath(path.join(__dirname, "task.json"));
-        const cwd: string = tl.getPathInput("path", true);
-        const level: string = tl.getInput("level", true);
+        const cwd: string = tl.getPathInput("path", true, true) || __dirname;
+        const level: string = tl.getInput("level", true) || "high";
         const productionOnly: boolean = tl.getBoolInput("productionOnly", false);
         const toolPath: string = tl.which("npm", true);
         const toolRunner: ToolRunner = tl.tool(toolPath).arg("audit");
