@@ -46,6 +46,14 @@
                 "high": "High",
                 "critical": "Critical"
             }
+        },
+        {
+            "name": "registry",
+            "type": "string",
+            "label": "Registry",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Registry to use"
         }
     ],
     "execution": {

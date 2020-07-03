@@ -8,10 +8,12 @@ async function run(): Promise<void> {
         const cwd: string = tl.getPathInput("path", true, true) || __dirname;
         const level: string = tl.getInput("level", true) || "high";
         const productionOnly: boolean = tl.getBoolInput("productionOnly", false);
+        const registry: string = tl.getInput("registry", false) as string;
         const toolPath: string = tl.which("npm", true);
         const toolRunner: ToolRunner = tl.tool(toolPath).arg("audit");
 
         if (productionOnly) toolRunner.arg("--production");
+        if (registry) toolRunner.arg(`--registry=${registry}`);
 
         tl.cd(cwd);
         const result: IExecSyncResult = toolRunner.execSync();
