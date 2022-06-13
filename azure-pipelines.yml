@@ -8,7 +8,7 @@ steps:
 - task: Npm@1
   displayName: 'Npm install'
   inputs:
-    command: 'ci --ignore-scripts'
+    command: 'ci'
 
 - task: npm-audit@1
   displayName: 'Npm audit'
