@@ -17,6 +17,6 @@ steps:
     level: 'low'
 
 - task: CmdLine@2
-  displayName: 'Compile typescript'
+  displayName: 'Package'
   inputs:
-    script: 'tsc'
+    script: 'npm run package'

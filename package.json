@@ -1,11 +1,17 @@
 {
   "name": "npm-audit",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Npm audit build task",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "test": "tsc && mocha tests\\_suite.js"
+    "build": "npm run clean && npm run compile && npm run test",
+    "clean": "rimraf ./source/*.js && rimraf ./tests/*.js && rimraf task",
+    "compile": "tsc",
+    "test": "mocha tests/_suite.js",
+    "package": "npm run build && npm run prepare-package && npm run package-extension",
+    "prepare-package": "mkdir task && cp source/*.js task && cp source/*.json task && cp source/*.png task && cp package.json task && cd task && npm install --only=production && rm package*.json",
+    "package-extension": "tfx extension create --manifest-globs vss-extension.json task/task.json",
+    "publish-extension": "tfx extension publish --manifest-globs vss-extension.json task/task.json"
   },
   "keywords": [
     "npm",
@@ -25,12 +31,14 @@
     "azure-pipelines-task-lib": "^3.3.1"
   },
   "devDependencies": {
-    "@types/mocha": "^9.1.0",
+    "@types/mocha": "^9.1.1",
     "@types/node": "^12.20.47",
-    "@types/q": "^1.5.2",
+    "@types/q": "^1.5.5",
     "eslint": "^8.17.0",
     "mocha": "^9.2.1",
     "sync-request": "^6.1.0",
-    "typescript": "^4.7.3"
+    "typescript": "^3.9.7",
+    "rimraf": "^3.0.2",
+    "tfx-cli": "^0.12.0"
   }
 }
