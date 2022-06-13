@@ -12,9 +12,6 @@
         "Patch": 0
     },
     "instanceNameFormat": "npm audit",
-    "demands": [
-        "npm"
-    ],
     "category": "Utility",
     "inputs": [
         {
