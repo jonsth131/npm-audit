@@ -30,6 +30,7 @@ function runNpmAudit(cwd: string, toolRunner: ToolRunner, level: string) {
         const packageLockFiles: string[] = getAllPackageLockFiles(cwd);
         let resultCode: number = 0;
         let result: string = "";
+
         for (const packageLockFile of packageLockFiles) {
             const res: IExecSyncResult = executeAudit(
                 toolRunner,
@@ -69,9 +70,16 @@ function executeAudit(
     toolRunner: ToolRunner,
     packageLockFile: string
 ): IExecSyncResult {
-    const cwd: string = path.dirname(packageLockFile);
+    const cwd: string = tl.cwd();
+    const pwd: string = path.dirname(packageLockFile);
+
+    tl.cd(pwd);
+
+    const result = toolRunner.execSync();
+
     tl.cd(cwd);
-    return toolRunner.execSync();
+
+    return result;
 }
 
 function getAllPackageLockFiles(cwd: string): string[] {

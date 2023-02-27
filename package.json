@@ -11,9 +11,9 @@
     "package": "npm run build && npm run prepare-package && npm run package-extension",
     "package:test": "npm run build && npm run prepare-package && npm run package-extension:test",
     "prepare-package": "mkdir task && cp source/*.js task && cp source/*.json task && cp package.json task && cd task && npm install --omit dev --no-package-lock && rm package*.json",
-    "package-extension": "tfx extension create --manifest-globs vss-extension.json task/task.json",
-    "package-extension:test": "tfx extension create --manifest-globs vss-extension-test.json task/task.json",
-    "publish-extension": "tfx extension publish --manifest-globs vss-extension.json task/task.json"
+    "package-extension": "tfx extension create --manifest-globs vss-extension.json",
+    "package-extension:test": "tfx extension create --manifest-globs vss-extension-test.json --rev-version",
+    "publish-extension": "tfx extension publish --manifest-globs vss-extension.json"
   },
   "keywords": [
     "npm",
