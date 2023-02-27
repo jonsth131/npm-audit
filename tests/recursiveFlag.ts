@@ -10,16 +10,12 @@ tmr.setAnswers({
     ["testpath"]: true,
   },
   exec: {
-    ["npm audit --registry=test"]: {
-      stdout: "No vunlerabilities found",
-      stderr: "",
-      code: 0,
-    },
+    ["npm audit"]: { stdout: "No vunlerabilities found", stderr: "", code: 0 },
   },
 });
 
 tmr.setInput("path", "testpath");
 tmr.setInput("level", "low");
-tmr.setInput("registry", "test");
+tmr.setInput("recursive", "true");
 
 tmr.run();

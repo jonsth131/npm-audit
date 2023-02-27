@@ -1,66 +1,58 @@
 {
-    "manifestVersion": 1,
-    "id": "npm-audit",
-    "name": "Npm audit",
-    "version": "1.1.0",
-    "publisher": "jonas-s",
-    "public": true,
-    "targets": [
-        {
-            "id": "Microsoft.VisualStudio.Services"
-        }
-    ],
-    "description": "Build task to run npm audit",
-    "categories": [
-        "Azure Pipelines"
-    ],
-    "tags": [
-        "Azure Pipelines",
-        "Dependency check",
-        "Security"
-    ],
-    "content": {
-        "details": {
-          "path": "overview.md"
-        },
-        "license": {
-          "path": "license.txt"
-        }
-      },
-    "links": {
-        "repository": {
-          "uri": "https://github.com/jonsth131/npm-audit"
-        },
-        "issues": {
-          "uri": "https://github.com/jonsth131/npm-audit/issues"
-        }
-      },
-      "repository": {
-        "type": "git",
-        "uri": "https://github.com/jonsth131/npm-audit"
-      },
-    "icons": {
-        "default": "extension-icon.png"
+  "manifestVersion": 1,
+  "id": "npm-audit",
+  "name": "Npm audit",
+  "version": "1.2.0",
+  "publisher": "jonas-s",
+  "public": true,
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "description": "Build task to run npm audit",
+  "categories": ["Azure Pipelines"],
+  "tags": ["Azure Pipelines", "Dependency check", "Security"],
+  "content": {
+    "details": {
+      "path": "overview.md"
     },
-    "files": [
-        {
-            "path": "task"
-        },
-        {
-            "path": "screenshot.png",
-            "addressable": true
-        }
-    ],
-    "contributions": [
-        {
-            "id": "npm-audit-build-task",
-            "type": "ms.vss-distributed-task.task",
-            "targets": [
-                "ms.vss-distributed-task.tasks"
-            ],
-            "properties": {
-                "name": "task"
-            }
-        }
-    ]
+    "license": {
+      "path": "LICENSE"
+    }
+  },
+  "links": {
+    "repository": {
+      "uri": "https://github.com/jonsth131/npm-audit"
+    },
+    "issues": {
+      "uri": "https://github.com/jonsth131/npm-audit/issues"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/jonsth131/npm-audit"
+  },
+  "icons": {
+    "default": "images/extension-icon.png"
+  },
+  "files": [
+    {
+      "path": "task"
+    },
+    {
+      "path": "screenshot.png",
+      "addressable": true
+    }
+  ],
+  "contributions": [
+    {
+      "id": "npm-audit-build-task",
+      "type": "ms.vss-distributed-task.task",
+      "targets": ["ms.vss-distributed-task.tasks"],
+      "properties": {
+        "name": "task"
+      }
+    }
+  ]
 }
