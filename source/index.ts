@@ -18,7 +18,7 @@ async function run(): Promise<void> {
         setRegistry(toolRunner);
 
         runNpmAudit(cwd, toolRunner, level);
-    } catch (err) {
+    } catch (err: any) {
         tl.setResult(tl.TaskResult.Failed, err.message);
     }
 }
