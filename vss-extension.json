@@ -39,10 +39,6 @@
   "files": [
     {
       "path": "task"
-    },
-    {
-      "path": "screenshot.png",
-      "addressable": true
     }
   ],
   "contributions": [
