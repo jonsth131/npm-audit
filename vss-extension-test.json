@@ -34,7 +34,7 @@
     "uri": "https://github.com/jonsth131/npm-audit"
   },
   "icons": {
-    "default": "extension-icon.png"
+    "default": "images/extension-icon.png"
   },
   "files": [
     {
