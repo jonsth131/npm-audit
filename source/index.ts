@@ -16,6 +16,7 @@ async function run(): Promise<void> {
 
         setProductionOnlyFlag(toolRunner);
         setRegistry(toolRunner);
+        setJsonFlag(toolRunner);
 
         runNpmAudit(cwd, toolRunner, level);
     } catch (err: any) {
@@ -23,8 +24,13 @@ async function run(): Promise<void> {
     }
 }
 
-function runNpmAudit(cwd: string, toolRunner: ToolRunner, level: string) {
+function runNpmAudit(
+    cwd: string,
+    toolRunner: ToolRunner,
+    level: string
+) {
     const recursive: boolean = tl.getBoolInput("recursive", false) || false;
+    const jsonOutput: boolean = tl.getBoolInput("jsonOutput", false);
 
     if (recursive === true) {
         const packageLockFiles: string[] = getAllPackageLockFiles(cwd);
@@ -36,14 +42,41 @@ function runNpmAudit(cwd: string, toolRunner: ToolRunner, level: string) {
                 toolRunner,
                 path.join(cwd, packageLockFile)
             );
-            result += res.stdout;
-            resultCode += res.code;
+
+            if (jsonOutput) {
+                const jsonFileName = createJsonFileName(packageLockFile);
+                writeJsonOutput(jsonFileName, res.stdout);
+            } else {
+                result += res.stdout;
+                resultCode += res.code;
+            }
         }
 
         checkForVulnerabilities(result, resultCode, level);
     } else {
         const result: IExecSyncResult = executeAudit(toolRunner, path.join(cwd, "package-lock.json"));
-        checkForVulnerabilities(result.stdout, result.code, level);
+
+        if (jsonOutput) {
+            writeJsonOutput("audit.json", result.stdout);
+        } else {
+            checkForVulnerabilities(result.stdout, result.code, level);
+        }
+    }
+}
+
+function createJsonFileName(packageLockFile: string): string {
+    const filename: string = path
+        .dirname(packageLockFile)
+        .replace(/\//g, "-")
+        .replace(/\\/g, "-");
+    if (filename === ".") return "audit.json";
+    return filename + ".json";
+}
+
+function writeJsonOutput(jsonOutputFile: string, result: string) {
+    const jsonOutputPath: string = tl.getPathInput("jsonOutputPath", false, true) || "";
+    if (jsonOutputFile !== "" && jsonOutputPath !== "") {
+        tl.writeFile(path.join(jsonOutputPath, jsonOutputFile), result);
     }
 }
 
@@ -94,6 +127,11 @@ function setProductionOnlyFlag(toolRunner: ToolRunner) {
 function setRegistry(toolRunner: ToolRunner) {
     const registry: string = tl.getInput("registry", false) as string;
     if (registry) toolRunner.arg(`--registry=${registry}`);
+}
+
+function setJsonFlag(toolRunner: ToolRunner) {
+    const jsonOutput: boolean = tl.getBoolInput("jsonOutput", false) || false;
+    if (jsonOutput) toolRunner.arg("--json");
 }
 
 function getLevelRegexp(level: string): RegExp {

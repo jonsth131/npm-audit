@@ -14,7 +14,7 @@ describe("npm-audit task tests", function() {
         let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
         tr.run();
-        assert.strictEqual(tr.succeeded, true, "should have succeeded");
+        assert.strictEqual(tr.succeeded, true, "should have succeeded" + tr.stdout);
         assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
         assert.strictEqual(tr.errorIssues.length, 0, "should have no errors");
         done();
@@ -109,6 +109,19 @@ describe("npm-audit task tests", function() {
         this.timeout(10000);
 
         let tp = path.join(__dirname, "registryPath.js");
+        let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+
+        tr.run();
+        assert.strictEqual(tr.succeeded, true, "should have succeeded");
+        assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
+        assert.strictEqual(tr.errorIssues.length, 0, "should have no errors");
+        done();
+    });
+
+    it("should append --json if jsonOutput is set", (done: () => void) => {
+        this.timeout(10000);
+
+        let tp = path.join(__dirname, "jsonOutput.js");
         let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
         tr.run();
