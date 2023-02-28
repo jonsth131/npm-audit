@@ -42,7 +42,7 @@ function runNpmAudit(cwd: string, toolRunner: ToolRunner, level: string) {
 
         checkForVulnerabilities(result, resultCode, level);
     } else {
-        const result: IExecSyncResult = executeAudit(toolRunner, path.join(cwd));
+        const result: IExecSyncResult = executeAudit(toolRunner, path.join(cwd, "package-lock.json"));
         checkForVulnerabilities(result.stdout, result.code, level);
     }
 }
