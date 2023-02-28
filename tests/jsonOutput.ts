@@ -16,6 +16,6 @@ tmr.setAnswers({
 
 tmr.setInput("path", "testpath");
 tmr.setInput("level", "low");
-tmr.setInput("jsonOutputPath", "testpath");
+tmr.setInput("jsonOutput", "true");
 
 tmr.run();

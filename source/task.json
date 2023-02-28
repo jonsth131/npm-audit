@@ -61,6 +61,14 @@
             "helpMarkDown": "Registry to use"
         },
         {
+            "name": "jsonOutput",
+            "type": "boolean",
+            "label": "Write JSON output",
+            "defaultValue": false,
+            "required": false,
+            "helpMarkDown": "Write JSON output to file"
+        },
+        {
             "name": "jsonOutputPath",
             "type": "filePath",
             "label": "JSON output path",
