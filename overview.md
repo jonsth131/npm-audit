@@ -15,6 +15,7 @@ To add the task to a pipeline, the following options exist.
     recursive: true
     level: 'high'
     registry: 'my-registry'
+    jsonOutputPath: 'path to export results'
 ```
 
 | Variable         | Required | Description                                                                                                                                       |
@@ -24,3 +25,4 @@ To add the task to a pipeline, the following options exist.
 | `recursive`      | No       | If all recursive package-lock.json files should be scanned, default is `false`                                                                    |
 | `level`          | Yes      | Which level a build will break on if vulnerabilities are found. Available options are `low`, `moderate`, `high` and `critical`, default is `high` |
 | `registry`       | No       | Optional registry to use                                                                                                                          |
+| `jsonOutputPath` | No       | Output results as JSON files to selected directory                                                                                                |

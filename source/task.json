@@ -18,7 +18,7 @@
       "name": "path",
       "type": "filePath",
       "label": "Working directory",
-      "defaultValue": "",
+      "defaultValue": "$(Build.SourcesDirectory)",
       "required": true,
       "helpMarkDown": "Working directory to run npm audit in"
     },
@@ -59,6 +59,14 @@
       "defaultValue": "",
       "required": false,
       "helpMarkDown": "Registry to use"
+    },
+    {
+      "name": "jsonOutputPath",
+      "type": "filePath",
+      "label": "JSON output path",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Path to write JSON output to"
     }
   ],
   "execution": {

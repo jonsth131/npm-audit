@@ -1,116 +1,155 @@
 import * as tl from "azure-pipelines-task-lib/task";
 import * as path from "path";
 import {
-    ToolRunner,
-    IExecSyncResult,
+  ToolRunner,
+  IExecSyncResult,
 } from "azure-pipelines-task-lib/toolrunner";
 import * as glob from "glob";
 
 async function run(): Promise<void> {
-    try {
-        tl.setResourcePath(path.join(__dirname, "task.json"));
-        const cwd: string = tl.getPathInput("path", true, true) || __dirname;
-        const level: string = tl.getInput("level", true) || "high";
-        const toolPath: string = tl.which("npm", true);
-        const toolRunner: ToolRunner = tl.tool(toolPath).arg("audit");
+  try {
+    tl.setResourcePath(path.join(__dirname, "task.json"));
+    const cwd: string = tl.getPathInput("path", true, true) || __dirname;
+    const level: string = tl.getInput("level", true) || "high";
+    const toolPath: string = tl.which("npm", true);
+    const toolRunner: ToolRunner = tl.tool(toolPath).arg("audit");
+    const jsonOutputPath: string = tl.getInput("jsonOutputPath", false) || "";
 
-        setProductionOnlyFlag(toolRunner);
-        setRegistry(toolRunner);
+    setProductionOnlyFlag(toolRunner);
+    setRegistry(toolRunner);
+    setJsonFlag(toolRunner, jsonOutputPath);
 
-        runNpmAudit(cwd, toolRunner, level);
-    } catch (err: any) {
-        tl.setResult(tl.TaskResult.Failed, err.message);
-    }
+    runNpmAudit(cwd, toolRunner, level, jsonOutputPath);
+  } catch (err: any) {
+    tl.setResult(tl.TaskResult.Failed, err.message);
+  }
 }
 
-function runNpmAudit(cwd: string, toolRunner: ToolRunner, level: string) {
-    const recursive: boolean = tl.getBoolInput("recursive", false) || false;
+function runNpmAudit(
+  cwd: string,
+  toolRunner: ToolRunner,
+  level: string,
+  jsonOutputPath: string
+) {
+  const recursive: boolean = tl.getBoolInput("recursive", false) || false;
 
-    if (recursive === true) {
-        const packageLockFiles: string[] = getAllPackageLockFiles(cwd);
-        let resultCode: number = 0;
-        let result: string = "";
+  if (recursive === true) {
+    const packageLockFiles: string[] = getAllPackageLockFiles(cwd);
+    let resultCode: number = 0;
+    let result: string = "";
 
-        for (const packageLockFile of packageLockFiles) {
-            const res: IExecSyncResult = executeAudit(
-                toolRunner,
-                path.join(cwd, packageLockFile)
-            );
-            result += res.stdout;
-            resultCode += res.code;
-        }
+    for (const packageLockFile of packageLockFiles) {
+      const res: IExecSyncResult = executeAudit(
+        toolRunner,
+        path.join(cwd, packageLockFile)
+      );
 
-        checkForVulnerabilities(result, resultCode, level);
-    } else {
-        const result: IExecSyncResult = executeAudit(toolRunner, path.join(cwd));
-        checkForVulnerabilities(result.stdout, result.code, level);
+      if (jsonOutputPath !== "") {
+        const jsonFileName = createJsonFileName(packageLockFile);
+        console.log(jsonFileName);
+        writeJsonOutput(path.join(jsonOutputPath, jsonFileName), res.stdout);
+      } else {
+        result += res.stdout;
+        resultCode += res.code;
+      }
     }
+
+    checkForVulnerabilities(result, resultCode, level);
+  } else {
+    const result: IExecSyncResult = executeAudit(toolRunner, path.join(cwd));
+    if (jsonOutputPath !== "") {
+      writeJsonOutput(path.join(jsonOutputPath, "audit.json"), result.stdout);
+    } else {
+      checkForVulnerabilities(result.stdout, result.code, level);
+    }
+  }
+}
+
+function createJsonFileName(packageLockFile: string): string {
+  const filename: string = path
+    .dirname(packageLockFile)
+    .replace(/\//g, "-")
+    .replace(/\\/g, "-");
+  if (filename === ".") return "audit.json";
+  return filename + ".json";
+}
+
+function writeJsonOutput(jsonOutputFile: string, result: string) {
+  if (jsonOutputFile !== "") {
+    tl.writeFile(jsonOutputFile, result);
+  }
 }
 
 function checkForVulnerabilities(
-    result: string,
-    resultCode: number,
-    level: string
+  result: string,
+  resultCode: number,
+  level: string
 ) {
-    if (resultCode === 0) return;
+  if (resultCode === 0) return;
 
-    const regexp: RegExp = getLevelRegexp(level);
+  const regexp: RegExp = getLevelRegexp(level);
 
-    const shouldBreak: boolean = regexp.test(result);
+  const shouldBreak: boolean = regexp.test(result);
 
-    if (shouldBreak) {
-        console.log(tl.loc("VulnerabilitiesFound"));
-        tl.setResult(tl.TaskResult.Failed, "Vulnerabilities found");
-    } else {
-        console.log(tl.loc("VulnerabilitiesFoundButLowerLevel"));
-    }
+  if (shouldBreak) {
+    console.log(tl.loc("VulnerabilitiesFound"));
+    tl.setResult(tl.TaskResult.Failed, "Vulnerabilities found");
+  } else {
+    console.log(tl.loc("VulnerabilitiesFoundButLowerLevel"));
+  }
 }
 
 function executeAudit(
-    toolRunner: ToolRunner,
-    packageLockFile: string
+  toolRunner: ToolRunner,
+  packageLockFile: string
 ): IExecSyncResult {
-    const cwd: string = tl.cwd();
-    const pwd: string = path.dirname(packageLockFile);
+  const cwd: string = tl.cwd();
+  const pwd: string = path.dirname(packageLockFile);
 
-    tl.cd(pwd);
+  tl.cd(pwd);
 
-    const result = toolRunner.execSync();
+  const result = toolRunner.execSync();
 
-    tl.cd(cwd);
+  tl.cd(cwd);
 
-    return result;
+  return result;
 }
 
 function getAllPackageLockFiles(cwd: string): string[] {
-    return glob.sync("**/package-lock.json", { cwd });
+  return glob.sync("**/package-lock.json", { cwd });
 }
 
 function setProductionOnlyFlag(toolRunner: ToolRunner) {
-    const productionOnly: boolean = tl.getBoolInput("productionOnly", false);
-    if (productionOnly) toolRunner.arg("--production");
+  const productionOnly: boolean = tl.getBoolInput("productionOnly", false);
+  if (productionOnly) toolRunner.arg("--production");
 }
 
 function setRegistry(toolRunner: ToolRunner) {
-    const registry: string = tl.getInput("registry", false) as string;
-    if (registry) toolRunner.arg(`--registry=${registry}`);
+  const registry: string = tl.getInput("registry", false) as string;
+  if (registry) toolRunner.arg(`--registry=${registry}`);
+}
+
+function setJsonFlag(toolRunner: ToolRunner, jsonOutputPath: string) {
+  if (jsonOutputPath !== "") {
+    toolRunner.arg("--json");
+  }
 }
 
 function getLevelRegexp(level: string): RegExp {
-    if (level === "low") {
-        return new RegExp(/\d+ (low|moderate|high|critical)+/gm);
-    }
-    if (level === "moderate") {
-        return new RegExp(/\d+ (moderate|high|critical)+/gm);
-    }
-    if (level === "high") {
-        return new RegExp(/\d+ (high|critical)+/gm);
-    }
-    if (level === "critical") {
-        return new RegExp(/\d+ critical/gm);
-    }
+  if (level === "low") {
+    return new RegExp(/\d+ (low|moderate|high|critical)+/gm);
+  }
+  if (level === "moderate") {
+    return new RegExp(/\d+ (moderate|high|critical)+/gm);
+  }
+  if (level === "high") {
+    return new RegExp(/\d+ (high|critical)+/gm);
+  }
+  if (level === "critical") {
+    return new RegExp(/\d+ critical/gm);
+  }
 
-    throw new Error("Unexpected level");
+  throw new Error("Unexpected level");
 }
 
 run();

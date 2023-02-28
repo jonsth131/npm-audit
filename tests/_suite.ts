@@ -117,4 +117,17 @@ describe("npm-audit task tests", function() {
         assert.strictEqual(tr.errorIssues.length, 0, "should have no errors");
         done();
     });
+
+    it("should append --json if jsonOutputPath is set", (done: () => void) => {
+        this.timeout(10000);
+
+        let tp = path.join(__dirname, "jsonOutputPath.js");
+        let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+
+        tr.run();
+        assert.strictEqual(tr.succeeded, true, "should have succeeded");
+        assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
+        assert.strictEqual(tr.errorIssues.length, 0, "should have no errors");
+        done();
+    });
 });
