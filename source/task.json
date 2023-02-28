@@ -1,81 +1,81 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
-  "id": "7890f95d-fd3a-4e5e-8a26-58d1bd0d4e0b",
-  "name": "npm-audit",
-  "friendlyName": "Npm audit",
-  "description": "Build step to run npm audit",
-  "helpMarkDown": "",
-  "author": "Jonas S",
-  "version": {
-    "Major": 1,
-    "Minor": 2,
-    "Patch": 0
-  },
-  "instanceNameFormat": "npm audit",
-  "category": "Utility",
-  "inputs": [
-    {
-      "name": "path",
-      "type": "filePath",
-      "label": "Working directory",
-      "defaultValue": "$(Build.SourcesDirectory)",
-      "required": true,
-      "helpMarkDown": "Working directory to run npm audit in"
+    "$schema": "https://raw.githubusercontent.com/microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+    "id": "7890f95d-fd3a-4e5e-8a26-58d1bd0d4e0b",
+    "name": "npm-audit",
+    "friendlyName": "Npm audit",
+    "description": "Build step to run npm audit",
+    "helpMarkDown": "https://github.com/jonsth131/npm-audit/blob/master/overview.md",
+    "author": "Jonas S",
+    "version": {
+        "Major": 1,
+        "Minor": 2,
+        "Patch": 0
     },
-    {
-      "name": "productionOnly",
-      "type": "boolean",
-      "label": "Check production dependencies only",
-      "defaultValue": false,
-      "required": false,
-      "helpMarkDown": "Skips devDependencies and only checks production dependencies"
+    "instanceNameFormat": "npm audit",
+    "category": "Utility",
+    "inputs": [
+        {
+            "name": "path",
+            "type": "filePath",
+            "label": "Working directory",
+            "defaultValue": "$(Build.SourcesDirectory)",
+            "required": true,
+            "helpMarkDown": "Working directory to run npm audit in"
+        },
+        {
+            "name": "productionOnly",
+            "type": "boolean",
+            "label": "Check production dependencies only",
+            "defaultValue": false,
+            "required": false,
+            "helpMarkDown": "Skips devDependencies and only checks production dependencies"
+        },
+        {
+            "name": "recursive",
+            "type": "boolean",
+            "label": "Do a recursive scan for all package-lock.json files",
+            "defaultValue": false,
+            "required": false,
+            "helpMarkDown": "Run npm audit for all package-lock.json files in the working directory and subdirectories"
+        },
+        {
+            "name": "level",
+            "type": "radio",
+            "label": "Level to fail task",
+            "defaultValue": "high",
+            "required": true,
+            "helpMarkDown": "Vulnerability level detected to fail task",
+            "options": {
+                "low": "Low",
+                "moderate": "Moderate",
+                "high": "High",
+                "critical": "Critical"
+            }
+        },
+        {
+            "name": "registry",
+            "type": "string",
+            "label": "Registry",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Registry to use"
+        },
+        {
+            "name": "jsonOutputPath",
+            "type": "filePath",
+            "label": "JSON output path",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Path to write JSON output to"
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": "index.js"
+        }
     },
-    {
-      "name": "recursive",
-      "type": "boolean",
-      "label": "Do a recursive scan for all package-lock.json files",
-      "defaultValue": false,
-      "required": false,
-      "helpMarkDown": "Run npm audit for all package-lock.json files in the working directory and subdirectories"
-    },
-    {
-      "name": "level",
-      "type": "radio",
-      "label": "Level to fail task",
-      "defaultValue": "high",
-      "required": true,
-      "helpMarkDown": "Vulnerability level detected to fail task",
-      "options": {
-        "low": "Low",
-        "moderate": "Moderate",
-        "high": "High",
-        "critical": "Critical"
-      }
-    },
-    {
-      "name": "registry",
-      "type": "string",
-      "label": "Registry",
-      "defaultValue": "",
-      "required": false,
-      "helpMarkDown": "Registry to use"
-    },
-    {
-      "name": "jsonOutputPath",
-      "type": "filePath",
-      "label": "JSON output path",
-      "defaultValue": "",
-      "required": false,
-      "helpMarkDown": "Path to write JSON output to"
+    "messages": {
+        "VulnerabilitiesFoundButLowerLevel": "Vulnerabilities found with lower level than selected fail level",
+        "VulnerabilitiesFound": "Vulnerabilities found"
     }
-  ],
-  "execution": {
-    "Node": {
-      "target": "index.js"
-    }
-  },
-  "messages": {
-    "VulnerabilitiesFoundButLowerLevel": "Vulnerabilities found with lower level than selected fail level",
-    "VulnerabilitiesFound": "Vulnerabilities found"
-  }
 }
