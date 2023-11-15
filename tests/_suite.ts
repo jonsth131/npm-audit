@@ -166,21 +166,21 @@ describe("npm-audit task tests", function() {
 
 describe("checkForVulnerabilities tests", function() {
     it("should return false if no vulnerabilities are found", (done: Mocha.Done) => {
-        let actual = checkOutputForVulnerabilities("", "high", OutputType.Standard);
+        let actual = checkOutputForVulnerabilities("0 vulnerabilities", "high", OutputType.Standard);
         assert.strictEqual(actual.hasVulnerabilities, false, "No vulnerabilities should be found");
         assert.strictEqual(actual.breakBuild, false, "Should not break the build");
         done();
     });
 
     it("should break the build if vulnerabilities are found", (done: Mocha.Done) => {
-        let actual = checkOutputForVulnerabilities("10 high", "high", OutputType.Standard);
+        let actual = checkOutputForVulnerabilities("6 vulnerabilities (1 moderate, 2 high, 3 critical)", "high", OutputType.Standard);
         assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
         assert.strictEqual(actual.breakBuild, true, "Should break the build");
         done();
     });
 
     it("should not break the build if vulnerabilities are found but breakBuild is false", (done: Mocha.Done) => {
-        let actual = checkOutputForVulnerabilities("10 high", "critical", OutputType.Standard);
+        let actual = checkOutputForVulnerabilities("3 vulnerabilities (1 moderate, 2 high)", "critical", OutputType.Standard);
         assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
         assert.strictEqual(actual.breakBuild, false, "Should not break the build");
         done();
