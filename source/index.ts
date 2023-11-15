@@ -35,7 +35,6 @@ function runNpmAudit(
 
     if (recursive === true) {
         const packageLockFiles: string[] = getAllPackageLockFiles(cwd);
-        let resultCode: number = 0;
         let result: string = "";
 
         for (const packageLockFile of packageLockFiles) {
@@ -47,9 +46,9 @@ function runNpmAudit(
             if (jsonOutput) {
                 const jsonFileName = createJsonFileName(packageLockFile);
                 writeJsonOutput(jsonFileName, res.stdout);
+                checkForVulnerabilities(res.stdout, level);
             } else {
                 result += res.stdout;
-                resultCode += res.code;
             }
         }
 
@@ -59,9 +58,9 @@ function runNpmAudit(
 
         if (jsonOutput) {
             writeJsonOutput("audit.json", result.stdout);
-        } else {
-            checkForVulnerabilities(result.stdout, level);
         }
+
+        checkForVulnerabilities(result.stdout, level);
     }
 }
 
@@ -85,21 +84,22 @@ function checkForVulnerabilities(
     result: string,
     level: string
 ) {
-    const jsonOutput: boolean = tl.getBoolInput("jsonOutput", false);
-    const breakBuild: boolean = tl.getBoolInput("breakBuild", false);
+    const jsonOutput: boolean = tl.getBoolInput("jsonOutput");
+    const breakBuildInput: string | undefined = tl.getInput("breakBuild");
+    const breakBuild: boolean = breakBuildInput === undefined ? true : breakBuildInput.toLowerCase() === "true";
 
-    const outputType: OutputType = jsonOutput ? OutputType.Json : OutputType.Standard;
+    const outputType: OutputType = jsonOutput === true ? OutputType.Json : OutputType.Standard;
 
     const vulnerabilityResult = checkOutputForVulnerabilities(result, level, outputType);
 
-    if (vulnerabilityResult.breakBuild) {
+    if (vulnerabilityResult.breakBuild === true) {
         console.log(tl.loc("VulnerabilitiesFound"));
-        if (breakBuild) {
+        if (breakBuild === true) {
             tl.setResult(tl.TaskResult.Failed, "Vulnerabilities found");
         } else {
             tl.setResult(tl.TaskResult.SucceededWithIssues, "Vulnerabilities found");
         }
-    } else if (vulnerabilityResult.hasVulnerabilities) {
+    } else if (vulnerabilityResult.hasVulnerabilities === true) {
         console.log(tl.loc("VulnerabilitiesFoundButLowerLevel"));
     }
 }
@@ -137,23 +137,6 @@ function setRegistry(toolRunner: ToolRunner) {
 function setJsonFlag(toolRunner: ToolRunner) {
     const jsonOutput: boolean = tl.getBoolInput("jsonOutput", false) || false;
     if (jsonOutput) toolRunner.arg("--json");
-}
-
-function getLevelRegexp(level: string): RegExp {
-    if (level === "low") {
-        return new RegExp(/\d+ (low|moderate|high|critical)+/gm);
-    }
-    if (level === "moderate") {
-        return new RegExp(/\d+ (moderate|high|critical)+/gm);
-    }
-    if (level === "high") {
-        return new RegExp(/\d+ (high|critical)+/gm);
-    }
-    if (level === "critical") {
-        return new RegExp(/\d+ critical/gm);
-    }
-
-    throw new Error("Unexpected level");
 }
 
 run();
