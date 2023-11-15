@@ -1,3 +1,4 @@
+
 import tmrm = require("azure-pipelines-task-lib/mock-run");
 import path = require("path");
 
@@ -14,6 +15,6 @@ tmr.setAnswers({
 
 tmr.setInput("path", "testpath");
 tmr.setInput("level", "low");
-tmr.setInput("breakBuild", "true");
+tmr.setInput("breakBuild", "false");
 
 tmr.run();
