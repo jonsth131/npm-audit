@@ -9,7 +9,7 @@
     "version": {
         "Major": 1,
         "Minor": 2,
-        "Patch": 0
+        "Patch": 1
     },
     "instanceNameFormat": "npm audit",
     "category": "Utility",
@@ -75,6 +75,14 @@
             "defaultValue": "",
             "required": false,
             "helpMarkDown": "Path to write JSON output to"
+        },
+        {
+            "name": "breakBuild",
+            "type": "boolean",
+            "label": "Break build on vulnerability",
+            "defaultValue": true,
+            "required": false,
+            "helpMarkDown": "Break build when vulnerabilities are found"
         }
     ],
     "execution": {

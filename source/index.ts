@@ -5,6 +5,7 @@ import {
     IExecSyncResult,
 } from "azure-pipelines-task-lib/toolrunner";
 import * as glob from "glob";
+import { checkOutputForVulnerabilities, OutputType } from "./vulnerability-check";
 
 async function run(): Promise<void> {
     try {
@@ -34,7 +35,6 @@ function runNpmAudit(
 
     if (recursive === true) {
         const packageLockFiles: string[] = getAllPackageLockFiles(cwd);
-        let resultCode: number = 0;
         let result: string = "";
 
         for (const packageLockFile of packageLockFiles) {
@@ -46,21 +46,21 @@ function runNpmAudit(
             if (jsonOutput) {
                 const jsonFileName = createJsonFileName(packageLockFile);
                 writeJsonOutput(jsonFileName, res.stdout);
+                checkForVulnerabilities(res.stdout, level);
             } else {
                 result += res.stdout;
-                resultCode += res.code;
             }
         }
 
-        checkForVulnerabilities(result, resultCode, level);
+        checkForVulnerabilities(result, level);
     } else {
         const result: IExecSyncResult = executeAudit(toolRunner, path.join(cwd, "package-lock.json"));
 
         if (jsonOutput) {
             writeJsonOutput("audit.json", result.stdout);
-        } else {
-            checkForVulnerabilities(result.stdout, result.code, level);
         }
+
+        checkForVulnerabilities(result.stdout, level);
     }
 }
 
@@ -82,19 +82,24 @@ function writeJsonOutput(jsonOutputFile: string, result: string) {
 
 function checkForVulnerabilities(
     result: string,
-    resultCode: number,
     level: string
 ) {
-    if (resultCode === 0) return;
+    const jsonOutput: boolean = tl.getBoolInput("jsonOutput");
+    const breakBuildInput: string | undefined = tl.getInput("breakBuild");
+    const breakBuild: boolean = breakBuildInput === undefined ? true : breakBuildInput.toLowerCase() === "true";
 
-    const regexp: RegExp = getLevelRegexp(level);
+    const outputType: OutputType = jsonOutput === true ? OutputType.Json : OutputType.Standard;
 
-    const shouldBreak: boolean = regexp.test(result);
+    const vulnerabilityResult = checkOutputForVulnerabilities(result, level, outputType);
 
-    if (shouldBreak) {
+    if (vulnerabilityResult.breakBuild === true) {
         console.log(tl.loc("VulnerabilitiesFound"));
-        tl.setResult(tl.TaskResult.Failed, "Vulnerabilities found");
-    } else {
+        if (breakBuild === true) {
+            tl.setResult(tl.TaskResult.Failed, "Vulnerabilities found");
+        } else {
+            tl.setResult(tl.TaskResult.SucceededWithIssues, "Vulnerabilities found");
+        }
+    } else if (vulnerabilityResult.hasVulnerabilities === true) {
         console.log(tl.loc("VulnerabilitiesFoundButLowerLevel"));
     }
 }
@@ -132,23 +137,6 @@ function setRegistry(toolRunner: ToolRunner) {
 function setJsonFlag(toolRunner: ToolRunner) {
     const jsonOutput: boolean = tl.getBoolInput("jsonOutput", false) || false;
     if (jsonOutput) toolRunner.arg("--json");
-}
-
-function getLevelRegexp(level: string): RegExp {
-    if (level === "low") {
-        return new RegExp(/\d+ (low|moderate|high|critical)+/gm);
-    }
-    if (level === "moderate") {
-        return new RegExp(/\d+ (moderate|high|critical)+/gm);
-    }
-    if (level === "high") {
-        return new RegExp(/\d+ (high|critical)+/gm);
-    }
-    if (level === "critical") {
-        return new RegExp(/\d+ critical/gm);
-    }
-
-    throw new Error("Unexpected level");
 }
 
 run();

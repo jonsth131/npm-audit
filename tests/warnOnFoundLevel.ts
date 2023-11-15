@@ -14,6 +14,6 @@ tmr.setAnswers({
 
 tmr.setInput("path", "testpath");
 tmr.setInput("level", "low");
-tmr.setInput("breakBuild", "true");
+tmr.setInput("breakBuild", "false");
 
 tmr.run();

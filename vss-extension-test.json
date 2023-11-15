@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "npm-audit-test",
   "name": "Npm audit",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "publisher": "jonas-s",
   "public": false,
   "targets": [
