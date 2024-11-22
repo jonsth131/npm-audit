@@ -1,6 +1,6 @@
 {
   "name": "npm-audit",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Npm audit build task",
   "main": "index.js",
   "scripts": {
@@ -30,19 +30,19 @@
   "author": "jonas-s",
   "license": "MIT",
   "dependencies": {
-    "azure-pipelines-task-lib": "^4.7.0",
-    "glob": "^8.1.0"
+    "azure-pipelines-task-lib": "^4.17.3",
+    "glob": "^11.0.0"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "^18.14.2",
-    "@types/q": "^1.5.5",
-    "eslint": "^8.35.0",
-    "mocha": "^10.2.0",
-    "rimraf": "^4.1.2",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.3.1",
+    "@types/q": "^1.5.8",
+    "eslint": "^9.15.0",
+    "mocha": "^10.8.2",
+    "rimraf": "^6.0.1",
     "sync-request": "^6.1.0",
-    "tfx-cli": "^0.16.0",
+    "tfx-cli": "^0.17.0",
     "typescript": "^5.2.2"
   }
 }
