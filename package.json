@@ -31,18 +31,16 @@
   "license": "MIT",
   "dependencies": {
     "azure-pipelines-task-lib": "^4.17.3",
-    "glob": "^11.0.0"
+    "glob": "^11.0.3"
   },
   "devDependencies": {
-    "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^20.3.1",
     "@types/q": "^1.5.8",
     "eslint": "^9.15.0",
     "mocha": "^10.8.2",
     "rimraf": "^6.0.1",
-    "sync-request": "^6.1.0",
-    "tfx-cli": "^0.17.0",
+    "tfx-cli": "^0.21.1",
     "typescript": "^5.2.2"
   }
 }
