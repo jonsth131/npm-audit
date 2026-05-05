@@ -2,10 +2,8 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "strict": true
+    "strict": true,
+    "types": ["mocha"],
   },
-  "include": [
-    "source",
-    "tests"
-  ]
+  "include": ["source", "tests"],
 }
