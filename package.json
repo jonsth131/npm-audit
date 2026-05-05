@@ -41,6 +41,6 @@
     "mocha": "^11.7.5",
     "rimraf": "^6.1.3",
     "tfx-cli": "^0.23.1",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   }
 }
