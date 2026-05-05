@@ -30,7 +30,7 @@
   "author": "jonas-s",
   "license": "MIT",
   "dependencies": {
-    "azure-pipelines-task-lib": "^5.2.6",
+    "azure-pipelines-task-lib": "^5.2.10",
     "glob": "^13.0.6"
   },
   "devDependencies": {
