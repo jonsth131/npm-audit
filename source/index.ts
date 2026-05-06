@@ -55,10 +55,7 @@ function runNpmAudit(cwd: string, toolRunner: ToolRunner, level: string) {
 }
 
 function createJsonFileName(packageLockFile: string): string {
-  const filename: string = path
-    .dirname(packageLockFile)
-    .replaceAll(/\//g, "-")
-    .replaceAll(/\\/g, "-");
+  const filename: string = path.dirname(packageLockFile).replaceAll("/", "-").replaceAll("\\", "-");
   if (filename === ".") return "audit.json";
   return filename + ".json";
 }
