@@ -1,5 +1,5 @@
 import * as tmrm from "azure-pipelines-task-lib/mock-run";
-import * as path from "path";
+import * as path from "node:path";
 
 const taskPath = path.join(__dirname, "..", "source", "index.js");
 const tmr: tmrm.TaskMockRunner = new tmrm.TaskMockRunner(taskPath);
@@ -10,7 +10,7 @@ tmr.setAnswers({
     ["testpath"]: true,
   },
   exec: {
-    ["npm audit"]: { stdout: "No vunlerabilities found", stderr: "", code: 0 },
+    ["npm audit"]: { stdout: "No vulnerabilities found", stderr: "", code: 0 },
   },
 });
 

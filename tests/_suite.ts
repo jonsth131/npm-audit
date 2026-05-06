@@ -1,4 +1,4 @@
-import * as path from "path";
+import * as path from "node:path";
 import * as assert from "assert";
 import * as ttm from "azure-pipelines-task-lib/mock-test";
 import {
@@ -365,7 +365,11 @@ describe("checkForVulnerabilities tests", function () {
       },
     };
 
-    const actual = checkOutputForVulnerabilities(JSON.stringify(jsonOutput), "high", OutputType.Json);
+    const actual = checkOutputForVulnerabilities(
+      JSON.stringify(jsonOutput),
+      "high",
+      OutputType.Json,
+    );
     assert.strictEqual(actual.hasVulnerabilities, false, "No vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, false, "Should not break the build");
     done();
@@ -385,7 +389,11 @@ describe("checkForVulnerabilities tests", function () {
       },
     };
 
-    const actual = checkOutputForVulnerabilities(JSON.stringify(jsonOutput), "high", OutputType.Json);
+    const actual = checkOutputForVulnerabilities(
+      JSON.stringify(jsonOutput),
+      "high",
+      OutputType.Json,
+    );
     assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, true, "Should break the build");
     done();
@@ -554,7 +562,11 @@ describe("checkForVulnerabilities tests", function () {
       },
     };
 
-    const actual = checkOutputForVulnerabilities(JSON.stringify(jsonOutput), "low", OutputType.Json);
+    const actual = checkOutputForVulnerabilities(
+      JSON.stringify(jsonOutput),
+      "low",
+      OutputType.Json,
+    );
     assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, true, "Should break the build");
     done();
@@ -872,7 +884,11 @@ describe("Edge Cases and Error Handling", function () {
       },
     };
 
-    const actual = checkOutputForVulnerabilities(JSON.stringify(jsonOutput), "low", OutputType.Json);
+    const actual = checkOutputForVulnerabilities(
+      JSON.stringify(jsonOutput),
+      "low",
+      OutputType.Json,
+    );
     assert.strictEqual(actual.hasVulnerabilities, true, "Should detect vulnerabilities");
     assert.strictEqual(
       actual.breakBuild,
