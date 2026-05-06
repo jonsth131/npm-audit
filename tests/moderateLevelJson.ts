@@ -1,8 +1,8 @@
-import tmrm = require("azure-pipelines-task-lib/mock-run");
-import path = require("path");
+import * as tmrm from "azure-pipelines-task-lib/mock-run";
+import * as path from "node:path";
 
-let taskPath = path.join(__dirname, "..", "source", "index.js");
-let tmr: tmrm.TaskMockRunner = new tmrm.TaskMockRunner(taskPath);
+const taskPath = path.join(__dirname, "..", "source", "index.js");
+const tmr: tmrm.TaskMockRunner = new tmrm.TaskMockRunner(taskPath);
 
 const jsonOutput = `{
   "auditReportVersion": 2,
