@@ -15,15 +15,11 @@ describe("npm-audit task tests", function () {
   it("should succeed with required inputs", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "requiredInputs.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "requiredInputs.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
-      assert.strictEqual(
-        tr.succeeded,
-        true,
-        "should have succeeded" + tr.stdout,
-      );
+      assert.strictEqual(tr.succeeded, true, "should have succeeded" + tr.stdout);
       assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
       assert.strictEqual(tr.errorIssues.length, 0, "should have no errors");
       done();
@@ -33,18 +29,14 @@ describe("npm-audit task tests", function () {
   it("should fail if missing path", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "missingPath.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "missingPath.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, false, "should have failed");
       assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
       assert.strictEqual(tr.errorIssues.length, 1, "should have 1 error issue");
-      assert.strictEqual(
-        tr.errorIssues[0],
-        "Input required: path",
-        "error issue output",
-      );
+      assert.strictEqual(tr.errorIssues[0], "Input required: path", "error issue output");
       done();
     });
   });
@@ -52,18 +44,14 @@ describe("npm-audit task tests", function () {
   it("should fail if missing level", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "missingLevel.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "missingLevel.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, false, "should have failed");
       assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
       assert.strictEqual(tr.errorIssues.length, 1, "should have 1 error issue");
-      assert.strictEqual(
-        tr.errorIssues[0],
-        "Input required: level",
-        "error issue output",
-      );
+      assert.strictEqual(tr.errorIssues[0], "Input required: level", "error issue output");
       done();
     });
   });
@@ -71,18 +59,14 @@ describe("npm-audit task tests", function () {
   it("should fail if invalid level", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "invalidLevel.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "invalidLevel.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, false, "should have failed");
       assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
       assert.strictEqual(tr.errorIssues.length, 1, "should have 1 error issue");
-      assert.strictEqual(
-        tr.errorIssues[0],
-        "Unexpected level",
-        "error issue output",
-      );
+      assert.strictEqual(tr.errorIssues[0], "Unexpected level", "error issue output");
       done();
     });
   });
@@ -90,18 +74,14 @@ describe("npm-audit task tests", function () {
   it("should fail if vulnerabilites are found", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "failOnFoundLevel.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "failOnFoundLevel.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, false, "should have failed");
       assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
       assert.strictEqual(tr.errorIssues.length, 1, "should have 1 error issue");
-      assert.strictEqual(
-        tr.errorIssues[0],
-        "Vulnerabilities found",
-        "error issue output",
-      );
+      assert.strictEqual(tr.errorIssues[0], "Vulnerabilities found", "error issue output");
       done();
     });
   });
@@ -109,18 +89,14 @@ describe("npm-audit task tests", function () {
   it("should warn if vulnerabilites are found", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "warnOnFoundLevel.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "warnOnFoundLevel.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, true, "should have succeeded");
       assert.strictEqual(tr.warningIssues.length, 1, "should have one warning");
       assert.strictEqual(tr.errorIssues.length, 0, "should have no errors");
-      assert.strictEqual(
-        tr.warningIssues[0],
-        "Vulnerabilities found",
-        "warning issue output",
-      );
+      assert.strictEqual(tr.warningIssues[0], "Vulnerabilities found", "warning issue output");
       done();
     });
   });
@@ -128,18 +104,14 @@ describe("npm-audit task tests", function () {
   it("should fail if vulnerabilites are found in json output", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "failOnFoundLevelJson.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "failOnFoundLevelJson.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, false, "should have failed");
       assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
       assert.strictEqual(tr.errorIssues.length, 1, "should have 1 error issue");
-      assert.strictEqual(
-        tr.errorIssues[0],
-        "Vulnerabilities found",
-        "error issue output",
-      );
+      assert.strictEqual(tr.errorIssues[0], "Vulnerabilities found", "error issue output");
       done();
     });
   });
@@ -147,18 +119,14 @@ describe("npm-audit task tests", function () {
   it("should warn if vulnerabilites are found in json output", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "warnOnFoundLevelJson.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "warnOnFoundLevelJson.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, true, "should have succeeded");
       assert.strictEqual(tr.warningIssues.length, 1, "should have one warning");
       assert.strictEqual(tr.errorIssues.length, 0, "should have no errors");
-      assert.strictEqual(
-        tr.warningIssues[0],
-        "Vulnerabilities found",
-        "warning issue output",
-      );
+      assert.strictEqual(tr.warningIssues[0], "Vulnerabilities found", "warning issue output");
       done();
     });
   });
@@ -166,8 +134,8 @@ describe("npm-audit task tests", function () {
   it("should append --production if only production flag is set", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "productionFlag.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "productionFlag.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, true, "should have succeeded");
@@ -180,8 +148,8 @@ describe("npm-audit task tests", function () {
   it("should append --registry if registry is set", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "registryPath.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "registryPath.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, true, "should have succeeded");
@@ -194,8 +162,8 @@ describe("npm-audit task tests", function () {
   it("should append --json if jsonOutput is set", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "jsonOutput.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "jsonOutput.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, true, "should have succeeded");
@@ -208,18 +176,14 @@ describe("npm-audit task tests", function () {
   it("should fail with moderate level vulnerabilities", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "moderateLevelStandard.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "moderateLevelStandard.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, false, "should have failed");
       assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
       assert.strictEqual(tr.errorIssues.length, 1, "should have 1 error issue");
-      assert.strictEqual(
-        tr.errorIssues[0],
-        "Vulnerabilities found",
-        "error issue output",
-      );
+      assert.strictEqual(tr.errorIssues[0], "Vulnerabilities found", "error issue output");
       done();
     });
   });
@@ -227,18 +191,14 @@ describe("npm-audit task tests", function () {
   it("should fail with critical level vulnerabilities", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "criticalLevelStandard.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "criticalLevelStandard.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, false, "should have failed");
       assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
       assert.strictEqual(tr.errorIssues.length, 1, "should have 1 error issue");
-      assert.strictEqual(
-        tr.errorIssues[0],
-        "Vulnerabilities found",
-        "error issue output",
-      );
+      assert.strictEqual(tr.errorIssues[0], "Vulnerabilities found", "error issue output");
       done();
     });
   });
@@ -246,18 +206,14 @@ describe("npm-audit task tests", function () {
   it("should fail with moderate level vulnerabilities in json output", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "moderateLevelJson.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "moderateLevelJson.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, false, "should have failed");
       assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
       assert.strictEqual(tr.errorIssues.length, 1, "should have 1 error issue");
-      assert.strictEqual(
-        tr.errorIssues[0],
-        "Vulnerabilities found",
-        "error issue output",
-      );
+      assert.strictEqual(tr.errorIssues[0], "Vulnerabilities found", "error issue output");
       done();
     });
   });
@@ -265,18 +221,14 @@ describe("npm-audit task tests", function () {
   it("should fail with critical level vulnerabilities in json output", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "criticalLevelJson.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "criticalLevelJson.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, false, "should have failed");
       assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
       assert.strictEqual(tr.errorIssues.length, 1, "should have 1 error issue");
-      assert.strictEqual(
-        tr.errorIssues[0],
-        "Vulnerabilities found",
-        "error issue output",
-      );
+      assert.strictEqual(tr.errorIssues[0], "Vulnerabilities found", "error issue output");
       done();
     });
   });
@@ -284,18 +236,14 @@ describe("npm-audit task tests", function () {
   it("should fail when low level catches all vulnerabilities", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "lowLevelCatchesAll.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "lowLevelCatchesAll.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, false, "should have failed");
       assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
       assert.strictEqual(tr.errorIssues.length, 1, "should have 1 error issue");
-      assert.strictEqual(
-        tr.errorIssues[0],
-        "Vulnerabilities found",
-        "error issue output",
-      );
+      assert.strictEqual(tr.errorIssues[0], "Vulnerabilities found", "error issue output");
       done();
     });
   });
@@ -303,8 +251,8 @@ describe("npm-audit task tests", function () {
   it("should succeed when moderate level ignores low vulnerabilities", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "moderateLevelIgnoresLow.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "moderateLevelIgnoresLow.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, true, "should have succeeded");
@@ -317,18 +265,14 @@ describe("npm-audit task tests", function () {
   it("should handle single vulnerability", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "singleVulnerability.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "singleVulnerability.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, false, "should have failed");
       assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
       assert.strictEqual(tr.errorIssues.length, 1, "should have 1 error issue");
-      assert.strictEqual(
-        tr.errorIssues[0],
-        "Vulnerabilities found",
-        "error issue output",
-      );
+      assert.strictEqual(tr.errorIssues[0], "Vulnerabilities found", "error issue output");
       done();
     });
   });
@@ -336,18 +280,14 @@ describe("npm-audit task tests", function () {
   it("should handle large vulnerability counts", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "largeVulnerabilityCounts.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "largeVulnerabilityCounts.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, false, "should have failed");
       assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
       assert.strictEqual(tr.errorIssues.length, 1, "should have 1 error issue");
-      assert.strictEqual(
-        tr.errorIssues[0],
-        "Vulnerabilities found",
-        "error issue output",
-      );
+      assert.strictEqual(tr.errorIssues[0], "Vulnerabilities found", "error issue output");
       done();
     });
   });
@@ -355,8 +295,8 @@ describe("npm-audit task tests", function () {
   it("should handle production and json flags together", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "productionAndJson.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "productionAndJson.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, true, "should have succeeded");
@@ -369,8 +309,8 @@ describe("npm-audit task tests", function () {
   it("should handle registry and production flags together", (done: Mocha.Done) => {
     this.timeout(10000);
 
-    let tp = path.join(__dirname, "registryAndProduction.js");
-    let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+    const tp = path.join(__dirname, "registryAndProduction.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
     tr.runAsync().then(() => {
       assert.strictEqual(tr.succeeded, true, "should have succeeded");
@@ -383,46 +323,30 @@ describe("npm-audit task tests", function () {
 
 describe("checkForVulnerabilities tests", function () {
   it("should return false if no vulnerabilities are found", (done: Mocha.Done) => {
-    let actual = checkOutputForVulnerabilities(
-      "0 vulnerabilities",
-      "high",
-      OutputType.Standard,
-    );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      false,
-      "No vulnerabilities should be found",
-    );
+    const actual = checkOutputForVulnerabilities("0 vulnerabilities", "high", OutputType.Standard);
+    assert.strictEqual(actual.hasVulnerabilities, false, "No vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, false, "Should not break the build");
     done();
   });
 
   it("should break the build if vulnerabilities are found", (done: Mocha.Done) => {
-    let actual = checkOutputForVulnerabilities(
+    const actual = checkOutputForVulnerabilities(
       "6 vulnerabilities (1 moderate, 2 high, 3 critical)",
       "high",
       OutputType.Standard,
     );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Vulnerabilities should be found",
-    );
+    assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, true, "Should break the build");
     done();
   });
 
   it("should not break the build if vulnerabilities are found but breakBuild is false", (done: Mocha.Done) => {
-    let actual = checkOutputForVulnerabilities(
+    const actual = checkOutputForVulnerabilities(
       "3 vulnerabilities (1 moderate, 2 high)",
       "critical",
       OutputType.Standard,
     );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Vulnerabilities should be found",
-    );
+    assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, false, "Should not break the build");
     done();
   });
@@ -441,16 +365,8 @@ describe("checkForVulnerabilities tests", function () {
       },
     };
 
-    let actual = checkOutputForVulnerabilities(
-      JSON.stringify(jsonOutput),
-      "high",
-      OutputType.Json,
-    );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      false,
-      "No vulnerabilities should be found",
-    );
+    const actual = checkOutputForVulnerabilities(JSON.stringify(jsonOutput), "high", OutputType.Json);
+    assert.strictEqual(actual.hasVulnerabilities, false, "No vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, false, "Should not break the build");
     done();
   });
@@ -469,16 +385,8 @@ describe("checkForVulnerabilities tests", function () {
       },
     };
 
-    let actual = checkOutputForVulnerabilities(
-      JSON.stringify(jsonOutput),
-      "high",
-      OutputType.Json,
-    );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Vulnerabilities should be found",
-    );
+    const actual = checkOutputForVulnerabilities(JSON.stringify(jsonOutput), "high", OutputType.Json);
+    assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, true, "Should break the build");
     done();
   });
@@ -497,121 +405,65 @@ describe("checkForVulnerabilities tests", function () {
       },
     };
 
-    let actual = checkOutputForVulnerabilities(
+    const actual = checkOutputForVulnerabilities(
       JSON.stringify(jsonOutput),
       "critical",
       OutputType.Json,
     );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Vulnerabilities should be found",
-    );
+    assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, false, "Should not break the build");
     done();
   });
 
   it("should detect moderate level vulnerabilities in standard output", (done: Mocha.Done) => {
-    let actual = checkOutputForVulnerabilities(
-      "5 moderate",
-      "moderate",
-      OutputType.Standard,
-    );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Vulnerabilities should be found",
-    );
+    const actual = checkOutputForVulnerabilities("5 moderate", "moderate", OutputType.Standard);
+    assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, true, "Should break the build");
     done();
   });
 
   it("should detect critical level vulnerabilities in standard output", (done: Mocha.Done) => {
-    let actual = checkOutputForVulnerabilities(
-      "2 critical",
-      "critical",
-      OutputType.Standard,
-    );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Vulnerabilities should be found",
-    );
+    const actual = checkOutputForVulnerabilities("2 critical", "critical", OutputType.Standard);
+    assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, true, "Should break the build");
     done();
   });
 
   it("should handle low level catching all severities", (done: Mocha.Done) => {
-    let actual = checkOutputForVulnerabilities(
+    const actual = checkOutputForVulnerabilities(
       "1 low, 2 moderate, 3 high, 4 critical",
       "low",
       OutputType.Standard,
     );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Vulnerabilities should be found",
-    );
+    assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, true, "Should break the build");
     done();
   });
 
   it("should handle moderate level ignoring low vulnerabilities", (done: Mocha.Done) => {
-    let actual = checkOutputForVulnerabilities(
-      "10 low",
-      "moderate",
-      OutputType.Standard,
-    );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Vulnerabilities should be found",
-    );
+    const actual = checkOutputForVulnerabilities("10 low", "moderate", OutputType.Standard);
+    assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, false, "Should not break the build");
     done();
   });
 
   it("should handle high level ignoring low and moderate vulnerabilities", (done: Mocha.Done) => {
-    let actual = checkOutputForVulnerabilities(
-      "5 low, 3 moderate",
-      "high",
-      OutputType.Standard,
-    );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Vulnerabilities should be found",
-    );
+    const actual = checkOutputForVulnerabilities("5 low, 3 moderate", "high", OutputType.Standard);
+    assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, false, "Should not break the build");
     done();
   });
 
   it("should handle single vulnerability", (done: Mocha.Done) => {
-    let actual = checkOutputForVulnerabilities(
-      "1 critical",
-      "critical",
-      OutputType.Standard,
-    );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Vulnerabilities should be found",
-    );
+    const actual = checkOutputForVulnerabilities("1 critical", "critical", OutputType.Standard);
+    assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, true, "Should break the build");
     done();
   });
 
   it("should handle large vulnerability counts", (done: Mocha.Done) => {
-    let actual = checkOutputForVulnerabilities(
-      "999 high",
-      "high",
-      OutputType.Standard,
-    );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Vulnerabilities should be found",
-    );
+    const actual = checkOutputForVulnerabilities("999 high", "high", OutputType.Standard);
+    assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, true, "Should break the build");
     done();
   });
@@ -630,16 +482,12 @@ describe("checkForVulnerabilities tests", function () {
       },
     };
 
-    let actual = checkOutputForVulnerabilities(
+    const actual = checkOutputForVulnerabilities(
       JSON.stringify(jsonOutput),
       "moderate",
       OutputType.Json,
     );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Vulnerabilities should be found",
-    );
+    assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, true, "Should break the build");
     done();
   });
@@ -658,16 +506,12 @@ describe("checkForVulnerabilities tests", function () {
       },
     };
 
-    let actual = checkOutputForVulnerabilities(
+    const actual = checkOutputForVulnerabilities(
       JSON.stringify(jsonOutput),
       "critical",
       OutputType.Json,
     );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Vulnerabilities should be found",
-    );
+    assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, true, "Should break the build");
     done();
   });
@@ -686,16 +530,12 @@ describe("checkForVulnerabilities tests", function () {
       },
     };
 
-    let actual = checkOutputForVulnerabilities(
+    const actual = checkOutputForVulnerabilities(
       JSON.stringify(jsonOutput),
       "moderate",
       OutputType.Json,
     );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Vulnerabilities should be found",
-    );
+    assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, false, "Should not break the build");
     done();
   });
@@ -714,16 +554,8 @@ describe("checkForVulnerabilities tests", function () {
       },
     };
 
-    let actual = checkOutputForVulnerabilities(
-      JSON.stringify(jsonOutput),
-      "low",
-      OutputType.Json,
-    );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Vulnerabilities should be found",
-    );
+    const actual = checkOutputForVulnerabilities(JSON.stringify(jsonOutput), "low", OutputType.Json);
+    assert.strictEqual(actual.hasVulnerabilities, true, "Vulnerabilities should be found");
     assert.strictEqual(actual.breakBuild, true, "Should break the build");
     done();
   });
@@ -766,7 +598,7 @@ describe("JsonOutput tests", function () {
       },
     };
 
-    let actual: JsonOutput = JSON.parse(jsonOutput);
+    const actual: JsonOutput = JSON.parse(jsonOutput);
 
     assert.equal(
       actual.metadata.vulnerabilities.info,
@@ -1001,26 +833,14 @@ describe("JsonOutput tests", function () {
   }
 }`;
 
-    let actual: JsonOutput = JSON.parse(jsonOutput);
+    const actual: JsonOutput = JSON.parse(jsonOutput);
 
     assert.equal(actual.metadata.vulnerabilities.info, 0, "info should match");
     assert.equal(actual.metadata.vulnerabilities.low, 0, "low should match");
-    assert.equal(
-      actual.metadata.vulnerabilities.moderate,
-      1,
-      "moderate should match",
-    );
+    assert.equal(actual.metadata.vulnerabilities.moderate, 1, "moderate should match");
     assert.equal(actual.metadata.vulnerabilities.high, 2, "high should match");
-    assert.equal(
-      actual.metadata.vulnerabilities.critical,
-      3,
-      "critical should match",
-    );
-    assert.equal(
-      actual.metadata.vulnerabilities.total,
-      6,
-      "total should match",
-    );
+    assert.equal(actual.metadata.vulnerabilities.critical, 3, "critical should match");
+    assert.equal(actual.metadata.vulnerabilities.total, 6, "total should match");
     done();
   });
 });
@@ -1052,16 +872,8 @@ describe("Edge Cases and Error Handling", function () {
       },
     };
 
-    let actual = checkOutputForVulnerabilities(
-      JSON.stringify(jsonOutput),
-      "low",
-      OutputType.Json,
-    );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Should detect vulnerabilities",
-    );
+    const actual = checkOutputForVulnerabilities(JSON.stringify(jsonOutput), "low", OutputType.Json);
+    assert.strictEqual(actual.hasVulnerabilities, true, "Should detect vulnerabilities");
     assert.strictEqual(
       actual.breakBuild,
       false,
@@ -1073,16 +885,8 @@ describe("Edge Cases and Error Handling", function () {
   it("should handle output with no vulnerability pattern", (done: Mocha.Done) => {
     const output = "Scanned 100 packages. Everything looks good!";
 
-    let actual = checkOutputForVulnerabilities(
-      output,
-      "high",
-      OutputType.Standard,
-    );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      false,
-      "Should not find vulnerabilities",
-    );
+    const actual = checkOutputForVulnerabilities(output, "high", OutputType.Standard);
+    assert.strictEqual(actual.hasVulnerabilities, false, "Should not find vulnerabilities");
     assert.strictEqual(actual.breakBuild, false, "Should not break build");
     done();
   });
@@ -1090,37 +894,21 @@ describe("Edge Cases and Error Handling", function () {
   it("should handle empty output", (done: Mocha.Done) => {
     const output = "";
 
-    let actual = checkOutputForVulnerabilities(
-      output,
-      "high",
-      OutputType.Standard,
-    );
+    const actual = checkOutputForVulnerabilities(output, "high", OutputType.Standard);
     assert.strictEqual(
       actual.hasVulnerabilities,
       false,
       "Should not find vulnerabilities in empty output",
     );
-    assert.strictEqual(
-      actual.breakBuild,
-      false,
-      "Should not break build on empty output",
-    );
+    assert.strictEqual(actual.breakBuild, false, "Should not break build on empty output");
     done();
   });
 
   it("should handle high level with only low vulnerabilities", (done: Mocha.Done) => {
     const output = "found 10 low vulnerabilities";
 
-    let actual = checkOutputForVulnerabilities(
-      output,
-      "high",
-      OutputType.Standard,
-    );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Should detect vulnerabilities",
-    );
+    const actual = checkOutputForVulnerabilities(output, "high", OutputType.Standard);
+    assert.strictEqual(actual.hasVulnerabilities, true, "Should detect vulnerabilities");
     assert.strictEqual(
       actual.breakBuild,
       false,
@@ -1132,16 +920,8 @@ describe("Edge Cases and Error Handling", function () {
   it("should handle critical level with moderate vulnerabilities", (done: Mocha.Done) => {
     const output = "found 5 moderate vulnerabilities";
 
-    let actual = checkOutputForVulnerabilities(
-      output,
-      "critical",
-      OutputType.Standard,
-    );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Should detect vulnerabilities",
-    );
+    const actual = checkOutputForVulnerabilities(output, "critical", OutputType.Standard);
+    assert.strictEqual(actual.hasVulnerabilities, true, "Should detect vulnerabilities");
     assert.strictEqual(
       actual.breakBuild,
       false,
@@ -1151,24 +931,11 @@ describe("Edge Cases and Error Handling", function () {
   });
 
   it("should handle mixed severity with plurals", (done: Mocha.Done) => {
-    const output =
-      "found 10 vulnerabilities (5 low, 3 moderate, 2 high) in 200 packages";
+    const output = "found 10 vulnerabilities (5 low, 3 moderate, 2 high) in 200 packages";
 
-    let actual = checkOutputForVulnerabilities(
-      output,
-      "high",
-      OutputType.Standard,
-    );
-    assert.strictEqual(
-      actual.hasVulnerabilities,
-      true,
-      "Should detect vulnerabilities",
-    );
-    assert.strictEqual(
-      actual.breakBuild,
-      true,
-      "Should break build when high vulns present",
-    );
+    const actual = checkOutputForVulnerabilities(output, "high", OutputType.Standard);
+    assert.strictEqual(actual.hasVulnerabilities, true, "Should detect vulnerabilities");
+    assert.strictEqual(actual.breakBuild, true, "Should break build when high vulns present");
     done();
   });
 
@@ -1187,7 +954,7 @@ describe("Edge Cases and Error Handling", function () {
     };
 
     ["low", "moderate", "high", "critical"].forEach((level) => {
-      let actual = checkOutputForVulnerabilities(
+      const actual = checkOutputForVulnerabilities(
         JSON.stringify(jsonOutput),
         level,
         OutputType.Json,
@@ -1215,51 +982,27 @@ describe("Edge Cases and Error Handling", function () {
       }
     }`;
 
-    let actual = checkOutputForVulnerabilities(
-      jsonOutput,
-      "high",
-      OutputType.Json,
-    );
+    const actual = checkOutputForVulnerabilities(jsonOutput, "high", OutputType.Json);
     assert.strictEqual(
       actual.hasVulnerabilities,
       false,
       "Should not find vulnerabilities when total is 0",
     );
-    assert.strictEqual(
-      actual.breakBuild,
-      true,
-      "Should break build even when total is 0",
-    );
+    assert.strictEqual(actual.breakBuild, true, "Should break build even when total is 0");
     done();
   });
 
   it("should detect vulnerabilities with different number formats", (done: Mocha.Done) => {
-    let actual1 = checkOutputForVulnerabilities(
-      "1 critical",
-      "critical",
-      OutputType.Standard,
-    );
+    const actual1 = checkOutputForVulnerabilities("1 critical", "critical", OutputType.Standard);
     assert.strictEqual(actual1.breakBuild, true, "Should detect single digit");
 
-    let actual2 = checkOutputForVulnerabilities(
-      "42 high",
-      "high",
-      OutputType.Standard,
-    );
+    const actual2 = checkOutputForVulnerabilities("42 high", "high", OutputType.Standard);
     assert.strictEqual(actual2.breakBuild, true, "Should detect two digits");
 
-    let actual3 = checkOutputForVulnerabilities(
-      "123 moderate",
-      "moderate",
-      OutputType.Standard,
-    );
+    const actual3 = checkOutputForVulnerabilities("123 moderate", "moderate", OutputType.Standard);
     assert.strictEqual(actual3.breakBuild, true, "Should detect three digits");
 
-    let actual4 = checkOutputForVulnerabilities(
-      "99999 low",
-      "low",
-      OutputType.Standard,
-    );
+    const actual4 = checkOutputForVulnerabilities("99999 low", "low", OutputType.Standard);
     assert.strictEqual(actual4.breakBuild, true, "Should detect large numbers");
 
     done();
