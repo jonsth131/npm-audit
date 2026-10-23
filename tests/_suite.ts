@@ -173,6 +173,39 @@ describe("npm-audit task tests", function () {
     });
   });
 
+  it("should fail when npm audit exits with an error and no audit output", async function () {
+    this.timeout(10000);
+
+    const tp = path.join(__dirname, "auditError.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+
+    await tr.runAsync();
+    assert.strictEqual(tr.succeeded, false, "should have failed");
+    assert.strictEqual(tr.errorIssues.length, 1, "should have one error");
+  });
+
+  it("should fail when recursive scan finds no package-lock files", async function () {
+    this.timeout(10000);
+
+    const tp = path.join(__dirname, "recursiveNoLockfiles.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+
+    await tr.runAsync();
+    assert.strictEqual(tr.succeeded, false, "should have failed");
+    assert.strictEqual(tr.errorIssues.length, 1, "should have one error");
+  });
+
+  it("should succeed for recursive JSON output with valid audit results", async function () {
+    this.timeout(10000);
+
+    const tp = path.join(__dirname, "recursiveJson.js");
+    const tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+
+    await tr.runAsync();
+    assert.strictEqual(tr.succeeded, true, "should have succeeded");
+    assert.strictEqual(tr.errorIssues.length, 0, "should have no errors");
+  });
+
   it("should fail with moderate level vulnerabilities", (done: Mocha.Done) => {
     this.timeout(10000);
 

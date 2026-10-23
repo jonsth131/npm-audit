@@ -28,10 +28,15 @@ function runNpmAudit(cwd: string, toolRunner: ToolRunner, level: string) {
 
   if (recursive === true) {
     const packageLockFiles: string[] = getAllPackageLockFiles(cwd);
+    if (packageLockFiles.length === 0) {
+      throw new Error("No package-lock.json files found for recursive audit");
+    }
+
     let result: string = "";
 
     for (const packageLockFile of packageLockFiles) {
       const res: IExecSyncResult = executeAudit(toolRunner, path.join(cwd, packageLockFile));
+      validateAuditResult(res, jsonOutput);
 
       if (jsonOutput) {
         const jsonFileName = createJsonFileName(packageLockFile);
@@ -42,9 +47,12 @@ function runNpmAudit(cwd: string, toolRunner: ToolRunner, level: string) {
       }
     }
 
-    checkForVulnerabilities(result, level);
+    if (!jsonOutput) {
+      checkForVulnerabilities(result, level);
+    }
   } else {
     const result: IExecSyncResult = executeAudit(toolRunner, path.join(cwd, "package-lock.json"));
+    validateAuditResult(result, jsonOutput);
 
     if (jsonOutput) {
       writeJsonOutput("audit.json", result.stdout);
@@ -52,6 +60,66 @@ function runNpmAudit(cwd: string, toolRunner: ToolRunner, level: string) {
 
     checkForVulnerabilities(result.stdout, level);
   }
+}
+
+function validateAuditResult(result: IExecSyncResult, jsonOutput: boolean): void {
+  let isValidAuditResult: boolean;
+  let hasVulnerabilities: boolean;
+
+  if (jsonOutput) {
+    const auditResult = parseJsonAuditResult(result.stdout);
+    isValidAuditResult = auditResult !== undefined;
+    hasVulnerabilities = auditResult?.hasVulnerabilities ?? false;
+  } else {
+    hasVulnerabilities = /\b\d{1,6}\s+(low|moderate|high|critical)\b/i.test(result.stdout);
+    isValidAuditResult =
+      hasVulnerabilities ||
+      /\bno vulnerabilities found\b|\bfound\s+0\s+vulnerabilities?\b/i.test(result.stdout);
+  }
+
+  if (!isValidAuditResult) {
+    throw new Error("npm audit did not return a valid audit result");
+  }
+
+  if (result.code !== 0 && !hasVulnerabilities) {
+    throw new Error(`npm audit failed with exit code ${result.code}`);
+  }
+}
+
+function parseJsonAuditResult(result: string): { hasVulnerabilities: boolean } | undefined {
+  let parsed: unknown;
+
+  try {
+    parsed = JSON.parse(result) as unknown;
+  } catch {
+    return undefined;
+  }
+
+  if (
+    !isRecord(parsed) ||
+    !isRecord(parsed.metadata) ||
+    !isRecord(parsed.metadata.vulnerabilities)
+  ) {
+    return undefined;
+  }
+
+  const vulnerabilities = parsed.metadata.vulnerabilities;
+  const counts = ["info", "low", "moderate", "high", "critical", "total"];
+
+  if (counts.some((count) => typeof vulnerabilities[count] !== "number")) {
+    return undefined;
+  }
+
+  const total = vulnerabilities.total;
+  if (typeof total !== "number") {
+    return undefined;
+  }
+
+  return { hasVulnerabilities: total > 0 };
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
 }
 
 function createJsonFileName(packageLockFile: string): string {

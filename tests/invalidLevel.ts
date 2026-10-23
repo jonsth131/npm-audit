@@ -10,7 +10,7 @@ tmr.setAnswers({
     ["testpath"]: true,
   },
   exec: {
-    ["npm audit"]: { stdout: "No vunlerabilities found", stderr: "", code: 1 },
+    ["npm audit"]: { stdout: "No vulnerabilities found", stderr: "", code: 0 },
   },
 });
 
