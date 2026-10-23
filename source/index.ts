@@ -29,7 +29,7 @@ function runNpmAudit(cwd: string, toolRunner: ToolRunner, level: string) {
   if (recursive === true) {
     const packageLockFiles: string[] = getAllPackageLockFiles(cwd);
     if (packageLockFiles.length === 0) {
-      throw new Error("No package-lock.json files found for recursive audit");
+      throw new Error(tl.loc("NoPackageLockFilesFound"));
     }
 
     let result: string = "";
@@ -78,11 +78,11 @@ function validateAuditResult(result: IExecSyncResult, jsonOutput: boolean): void
   }
 
   if (!isValidAuditResult) {
-    throw new Error("npm audit did not return a valid audit result");
+    throw new Error(tl.loc("InvalidNpmAuditResult"));
   }
 
   if (result.code !== 0 && !hasVulnerabilities) {
-    throw new Error(`npm audit failed with exit code ${result.code}`);
+    throw new Error(tl.loc("NpmAuditFailed", result.code));
   }
 }
 

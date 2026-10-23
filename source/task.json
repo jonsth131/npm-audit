@@ -99,6 +99,9 @@
   "minimumAgentVersion": "2.144.0",
   "messages": {
     "VulnerabilitiesFoundButLowerLevel": "Vulnerabilities found with lower level than selected fail level",
-    "VulnerabilitiesFound": "Vulnerabilities found"
+    "VulnerabilitiesFound": "Vulnerabilities found",
+    "NoPackageLockFilesFound": "No package-lock.json files found for recursive audit",
+    "InvalidNpmAuditResult": "npm audit did not return a valid audit result",
+    "NpmAuditFailed": "npm audit failed with exit code {0}"
   }
 }
