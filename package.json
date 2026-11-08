@@ -34,7 +34,7 @@
   "license": "MIT",
   "dependencies": {
     "azure-pipelines-task-lib": "^5.278.0",
-    "glob": "^13.0.6"
+    "glob": "^14.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
